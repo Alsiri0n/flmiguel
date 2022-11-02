@@ -13,5 +13,5 @@ COPY requirements.txt /home
 RUN pip3 install -r /home/requirements.txt
 COPY app flmiguel
 # WORKDIR flmiguel
-ENTRYPOINT ["python3", "run.py"]
+ENTRYPOINT ["python3", "./run.py"]
 EXPOSE 3000 5050
