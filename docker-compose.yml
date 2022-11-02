@@ -1,0 +1,13 @@
+web:
+  build: .
+  container_name: flmiguel
+  ports:
+    - "1234:5050"
+  environment:
+    - flask_port=$FLASKPORT
+    - flask_host=$FLASKHOST
+    # - postgres_url=$POSTGRESURL
+    # - postgres_port=$POSTGRESPORT
+    # - postgres_user=$POSTGRESUSER
+    # - postgres_pw=$POSTGRESPW
+    # - postgres_db=$POSTGRESDB
