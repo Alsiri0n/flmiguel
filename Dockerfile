@@ -12,7 +12,6 @@ RUN dnf install python3 -y
 COPY requirements.txt /home
 RUN pip3 install -r /home/requirements.txt
 COPY app flmiguel
-COPY run.py run.py
 WORKDIR flmiguel
 ENTRYPOINT ["python3", "run.py"]
 EXPOSE 3000 5050
