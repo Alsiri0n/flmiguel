@@ -11,8 +11,8 @@ RUN dnf install python3 -y
 # RUN dnf install python-psycopg2
 COPY requirements.txt /home
 RUN pip3 install -r /home/requirements.txt
-WORKDIR flmiguel
 COPY app flmiguel/app
 COPY *.py ./
+WORKDIR flmiguel
 ENTRYPOINT ["python3", "run.py"]
 EXPOSE 5050
