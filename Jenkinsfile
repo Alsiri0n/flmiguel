@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'sudo HOST=$FLASK_HOST PORT=$FLASK_PORT docker-compose -f /root/flmiguel/docker-compose.yml up -d'
+                sh 'sudo docker-compose -f /root/flmiguel/docker-compose.yml up -d'
             }
         }
     }
