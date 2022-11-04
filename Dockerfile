@@ -6,8 +6,8 @@ RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|
 # RUN dnf install httpd -y
 RUN dnf install python3 -y
 # RUN dnf install postgresql-devel -y
-# RUN dnf install python3-devel -y
-# RUN dnf install gcc -y
+RUN dnf install python3-devel -y
+RUN dnf install gcc -y
 # RUN dnf install python-psycopg2
 COPY requirements.txt /home
 RUN pip3 install -r /home/requirements.txt
