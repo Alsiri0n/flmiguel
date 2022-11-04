@@ -5,9 +5,11 @@ RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|
 # RUN dnf install net-tools -y
 # RUN dnf install httpd -y
 RUN dnf install python3 -y
+#psycopg2-binary
 RUN dnf install postgresql-devel -y
 RUN dnf install python3-devel -y
 RUN dnf install gcc -y
+#Greenlet(sql-alchemy)
 RUN dnf install gcc-c++ -y
 # RUN dnf install python-psycopg2
 COPY requirements.txt /home
