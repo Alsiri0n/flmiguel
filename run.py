@@ -2,7 +2,8 @@ import os
 from app import app
 from config import Config
 
-app.config.from_object(Config)
+FLASK_HOST = str(os.environ.get('flask_host'))
+FLASK_PORT = int(os.environ.get('flask_port'))
 
 
 if __name__ == "__main__":
