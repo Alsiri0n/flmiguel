@@ -8,10 +8,5 @@ web:
     - flask_host=$FLASKHOST
     - FLASK_APP=$FLASK_APP
     - DB_URL=$DB_URL
-    # - postgres_url=$POSTGRESURL
-    # - postgres_port=$POSTGRESPORT
-    # - postgres_user=$POSTGRESUSER
-    # - postgres_pw=$POSTGRESPW
-    # - postgres_db=$POSTGRESDB
   volumes:
     - .env:/usr/src/app/flmiguel/.env
