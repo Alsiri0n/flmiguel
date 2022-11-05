@@ -16,7 +16,7 @@ RUN mkdir -p /usr/src/app/flmiguel
 # WORKDIR /usr/src/app/flmiguel
 COPY app flmiguel/app
 COPY *.py flmiguel/
-ENV FLASK_APP /root/flmiguel/run.py
 WORKDIR flmiguel
+ENV FLASK_APP run.py
 ENTRYPOINT ["python3", "run.py"]
 EXPOSE 5050
