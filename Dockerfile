@@ -1,5 +1,7 @@
 FROM ubuntu:latest
-RUN apt-get update && apt-get install -y python3.10
+RUN echo python --version
+RUN pip --version
+RUN apt-get update && apt-get install -y python3.10 python3-pip
 # RUN sudo apt-get install -y python
 #psycopg2-binary
 # RUN dnf install postgresql-devel -y
