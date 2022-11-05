@@ -1,6 +1,6 @@
 FROM ubuntu:latest
-RUN sudo apt-get update -y
-RUN sudo apt-get install -y python
+RUN apt-get update && apt-get install -y python3.10
+# RUN sudo apt-get install -y python
 #psycopg2-binary
 # RUN dnf install postgresql-devel -y
 # RUN dnf install python3-devel -y
@@ -9,7 +9,7 @@ RUN sudo apt-get install -y python
 # RUN dnf install gcc-c++ -y
 # RUN dnf install python-psycopg2
 COPY requirements.txt /home
-RUN pip3 install -r /home/requirements.txt
+RUN pip install -r /home/requirements.txt
 COPY app flmiguel/app
 COPY *.py flmiguel/
 WORKDIR flmiguel
