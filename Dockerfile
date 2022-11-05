@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-RUN echo python -V
+# RUN echo python -V
 # RUN pip --version
 RUN apt-get update && apt-get install -y python3.10 python3-pip
 # RUN sudo apt-get install -y python
