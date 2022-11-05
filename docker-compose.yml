@@ -13,4 +13,4 @@ web:
     # - postgres_pw=$POSTGRESPW
     # - postgres_db=$POSTGRESDB
   volumes:
-    ./env:/home/flmiguel/.env
+    .env:/home/flmiguel/
