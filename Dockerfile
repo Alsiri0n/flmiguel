@@ -17,6 +17,6 @@ WORKDIR /usr/src/app/flmiguel
 COPY app /usr/src/app/flmiguel/app
 COPY *.py /usr/src/app/flmiguel/
 # WORKDIR flmiguel
-ENV FLASK_APP /usr/src/app/flmiguel/run.py
+# ENV FLASK_APP /usr/src/app/flmiguel/run.py
 ENTRYPOINT ["python3", "run.py"]
 EXPOSE 5050
