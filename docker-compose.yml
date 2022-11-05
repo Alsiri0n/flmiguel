@@ -12,3 +12,5 @@ web:
     # - postgres_user=$POSTGRESUSER
     # - postgres_pw=$POSTGRESPW
     # - postgres_db=$POSTGRESDB
+  volumes:
+    ./env:/home/flmiguel/.env
