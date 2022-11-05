@@ -1,6 +1,7 @@
 """
 Module describe models for ORM and DB
 """
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app import db
 
@@ -16,6 +17,17 @@ class User(db.Model):
 
     def __repr__(self)->str:
         return f'<User: {self.username}>'
+
+    def set_password(self, password: str)->None:
+        """Function for set user password
+        """
+        self.password_hash = generate_password_hash(password)
+
+
+    def check_password(self, password: str)->bool:
+        """Function for check password
+        """
+        return check_password_hash(self.password_hash, password)
 
 
 class Post(db.Model):
