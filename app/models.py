@@ -2,6 +2,7 @@
 Module describe models for ORM and DB
 """
 from datetime import datetime
+from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import db, login
@@ -31,10 +32,10 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 @login.user_loader
-def load_user(id: int):
+def load_user(cur_id: int):
     """Get user id for Flask_login
     """
-    return User.query.get(int(id))
+    return User.query.get(int(cur_id))
 
 
 class Post(db.Model):
