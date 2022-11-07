@@ -111,7 +111,6 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
-
 @app.before_request
 def before_request():
     """
