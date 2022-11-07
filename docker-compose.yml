@@ -10,3 +10,4 @@ web:
     - DB_URL=$DB_URL
   volumes:
     - .env:/usr/src/app/flmiguel/.env
+    - logs:/usr/src/app/flmiguel/logs
