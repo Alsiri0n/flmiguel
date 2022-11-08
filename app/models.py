@@ -58,7 +58,7 @@ class User(UserMixin, db.Model):
         """
         if not self.is_following(user):
             self.followed.append(user)
-    
+
     def unfollow(self, user):
         """
         Unfollowed current user other user
@@ -77,8 +77,8 @@ class User(UserMixin, db.Model):
         Create list of posts for own and followed users
         """
         followed = Post.query.join(
-            followers, (followers.c.followed_id == Post.user_id).filter(
-                followers.c.follower_id == self.id))
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id)
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
 
