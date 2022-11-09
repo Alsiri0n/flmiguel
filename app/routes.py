@@ -152,6 +152,16 @@ def unfollow(username):
         return redirect(url_for('index'))
 
 
+@app.route('/explore')
+@login_required
+def explore():
+    """
+    Show all posts from all users
+    """
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', title='Explore', posts=posts)
+
+
 @app.before_request
 def before_request():
     """
@@ -160,3 +170,13 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+
+
+@app.template_filter('format_datetime')
+def format_datetime(value, format="%Y.%m.%d %H:%I:%M"):
+    """
+    Format a date time to (Default): d Mon YYYY HH:MM P
+    """
+    if value is None:
+        return ""
+    return value.strftime(format)
