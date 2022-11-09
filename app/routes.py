@@ -23,8 +23,10 @@ def index():
         db.session.commit()
         flash('Your post in now live!')
         return redirect(url_for('index'))
-    posts = current_user.followed_posts().all()
-    return render_template('index.html', title='Home', form=form, posts=posts)
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.followed_posts().paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    return render_template('index.html', title='Home', form=form, posts=posts.items)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -158,8 +160,10 @@ def explore():
     """
     Show all posts from all users
     """
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html', title='Explore', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    return render_template('index.html', title='Explore', posts=posts.items)
 
 
 @app.before_request
@@ -173,9 +177,9 @@ def before_request():
 
 
 @app.template_filter('format_datetime')
-def format_datetime(value, format="%Y.%m.%d %H:%I:%M"):
+def format_datetime(value, format="%Y.%m.%d %H:%M"):
     """
-    Format a date time to (Default): d Mon YYYY HH:MM P
+    Format a date time to (Default): YYYY.m.d HH:mm
     """
     if value is None:
         return ""
