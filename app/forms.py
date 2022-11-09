@@ -62,4 +62,16 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please user a different username.')
 
 class EmptyForm(FlaskForm):
+    """
+    Form for follow/unfollow user
+    """
+    submit = SubmitField('Submit')
+
+
+class PostForm(FlaskForm):
+    """
+    Form for posting messages
+    """
+    post = StringField('Say something',
+     validators=[DataRequired(), Length(min=1, max=140)])
     submit = SubmitField('Submit')

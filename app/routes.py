@@ -6,28 +6,25 @@ from werkzeug.urls import url_parse
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm
-from app.models import User
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm
+from app.models import User, Post
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     """
-    Create index page of site
+    Show index page of site
     """
-    # user = {'username': 'Alsiri0n'}
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in World!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html', title='Home', posts=posts)
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post in now live!')
+        return redirect(url_for('index'))
+    posts = current_user.followed_posts().all()
+    return render_template('index.html', title='Home', form=form, posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -63,7 +60,7 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """
-    Implement user registertation
+    Implement user registration
     """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -85,10 +82,7 @@ def profile(username: str):
     Implement user profile
     """
     user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
+    posts = Post.query.filter_by(user_id=current_user.id).all()
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts, form=form)
 
