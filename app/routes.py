@@ -87,9 +87,14 @@ def profile(username: str):
     Implement user profile
     """
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(user_id=current_user.id).all()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter_by(user_id=current_user.id).paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    next_url = url_for('profile', username=user.username, page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('profile', username=user.username, page=posts.prev_num) if posts.has_prev else None
     form = EmptyForm()
-    return render_template('user.html', user=user, posts=posts, form=form)
+    return render_template('user.html', user=user, posts=posts, form=form,
+     next_url=next_url, prev_url=prev_url)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
