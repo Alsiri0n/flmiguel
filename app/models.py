@@ -84,7 +84,7 @@ class User(UserMixin, db.Model):
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
 
-    def get_reset_password(self, expires_in:int=600)->str:
+    def get_reset_password_token(self, expires_in:int=600)->str:
         """
         Generate jwt token to reset password
         """
