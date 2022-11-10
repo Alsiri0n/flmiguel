@@ -1,7 +1,9 @@
 Flask==2.2.2
+Flask-email==0.9.1
 Flask-Login==0.6.2
 Flask-migrate==3.1.0
 Flask-sqlalchemy==3.0.2
 Flask-wtf==1.0.1
 email-validator==1.3.0
 psycopg2-binary==2.9.5
+pyjwt==2.6.0
