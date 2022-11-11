@@ -1,9 +1,9 @@
-<table>
-    <tr valign="top">
-        <td><img src="{{ post.author.avatar(32) }}" alt=""></td>
+<table class="table table-hover">
+    <tr>
+        <td width="70px"><img src="{{ post.author.avatar(70) }}" alt=""></td>
         <td>
             <a href="{{ url_for('profile', username=post.author.username) }}">{{ post.author.username }}</a>
-            says: <b>{{ post.body }}</b><br> at {{ post.timestamp| format_datetime }}
+            says: <br>{{ post.body }} at {{ post.timestamp | format_datetime }}
         </td>
     </tr>
 </table>
