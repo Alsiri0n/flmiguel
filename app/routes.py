@@ -6,7 +6,8 @@ from werkzeug.urls import url_parse
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, \
+ ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Post
 from app.email import send_password_reset_email
 
@@ -91,8 +92,10 @@ def profile(username: str):
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(user_id=current_user.id).paginate(
         page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
-    next_url = url_for('profile', username=user.username, page=posts.next_num) if posts.has_next else None
-    prev_url = url_for('profile', username=user.username, page=posts.prev_num) if posts.has_prev else None
+    next_url = url_for('profile', username=user.username, page=posts.next_num) \
+         if posts.has_next else None
+    prev_url = url_for('profile', username=user.username, page=posts.prev_num) \
+        if posts.has_prev else None
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts, form=form,
      next_url=next_url, prev_url=prev_url)
@@ -212,7 +215,7 @@ def reset_password(token):
         flash('Your password has been reset')
         return redirect(url_for('index'))
     return render_template('reset_password.html', form=form)
-    
+
 
 @app.before_request
 def before_request():
