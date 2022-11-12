@@ -227,11 +227,11 @@ def before_request():
         db.session.commit()
 
 
-@app.template_filter('format_datetime')
-def format_datetime(value, format="%Y.%m.%d %H:%M"):
-    """
-    Format a date time to (Default): YYYY.m.d HH:mm
-    """
-    if value is None:
-        return ""
-    return value.strftime(format)
+# @app.template_filter('format_datetime')
+# def format_datetime(value, format="%Y.%m.%d %H:%M"):
+#     """
+#     Format a date time to (Default): YYYY.m.d HH:mm
+#     """
+#     if value is None:
+#         return ""
+#     return value.strftime(format)
