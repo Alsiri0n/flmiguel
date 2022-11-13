@@ -1,5 +1,5 @@
 Flask==2.2.2
-Flas-Babel==2.0.0
+Flask-Babel==2.0.0
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.6.2
 Flask-Mail==0.9.1
