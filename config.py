@@ -25,3 +25,4 @@ class Config(object):
     ADMINS = [os.environ.get('ADMIN_MAIL')]
     POSTS_PER_PAGE = 3
     LANGUAGES = ['en', 'ru']
+    NLP_TRANSLATOR_KEY = os.environ.get('NLP_TRANSLATOR_KEY')
