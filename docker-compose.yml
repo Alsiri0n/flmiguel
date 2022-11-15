@@ -1,13 +1,20 @@
-web:
-  build: .
-  container_name: flmiguel
-  ports:
-    - "1234:5050"
-  environment:
-    - flask_port=$FLASKPORT
-    - flask_host=$FLASKHOST
-    - FLASK_APP=$FLASK_APP
-    - DB_URL=$DB_URL
-  volumes:
-    - .env:/usr/src/app/flmiguel/.env
-    - ./logs:/usr/src/app/flmiguel/logs/
+version: "3.8"
+networks:
+  alsinet
+    external: true
+services:
+  web:
+    build: .
+    container_name: flmiguel
+    ports:
+      - "1234:5050"
+    environment:
+      - flask_port=$FLASKPORT
+      - flask_host=$FLASKHOST
+      - FLASK_APP=$FLASK_APP
+      - DB_URL=$DB_URL
+    volumes:
+      - .env:/usr/src/app/flmiguel/.env
+      - ./logs:/usr/src/app/flmiguel/logs/
+    networks:
+      - alsinet
