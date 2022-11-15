@@ -35,6 +35,6 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - data01:/usr/share/elasticsearch/data
+      - .data01:/usr/share/elasticsearch/data
     networks:
       - alsinet
