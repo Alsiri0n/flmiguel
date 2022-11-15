@@ -7,7 +7,7 @@ services:
     build: .
     container_name: flmiguel
     ports:
-      - "1234:5050"
+      - 1234:5050
     environment:
       - flask_port=$FLASKPORT
       - flask_host=$FLASKHOST
@@ -16,5 +16,25 @@ services:
     volumes:
       - .env:/usr/src/app/flmiguel/.env
       - ./logs:/usr/src/app/flmiguel/logs/
+    networks:
+      - alsinet
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
+    container_name: es01
+    ports:
+      - 9200:9200
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
     networks:
       - alsinet
