@@ -4,7 +4,7 @@ Module for online translate posts
 import json
 import requests
 from flask_babel import _
-from app import app
+from app import current_app
 
 
 def translate(text, source_language, dest_langauge):

@@ -7,7 +7,7 @@ from hashlib import md5
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import db, login, app
+from app import db, login, current_app
 
 
 followers = db.Table('followers',
@@ -89,7 +89,7 @@ class User(UserMixin, db.Model):
         Generate jwt token to reset password
         """
         return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in},
-        app.config['SECRET_KEY'], algorithm='HS256')
+        current_app.config['SECRET_KEY'], algorithm='HS256')
 
     @staticmethod
     def verify_reset_password(token:str):
@@ -97,7 +97,8 @@ class User(UserMixin, db.Model):
         Verify token for reset password
         """
         try:
-            cur_id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
+            cur_id = jwt.decode(token, current_app.config['SECRET_KEY'], \
+                algorithms=['HS256'])['reset_password']
         except:
             return
         return User.query.get(cur_id)
