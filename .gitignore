@@ -8,3 +8,4 @@ _Dockerfile
 logs
 app.db
 messages.pot
+cloudbuild.yaml
