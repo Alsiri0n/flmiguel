@@ -1,11 +1,10 @@
 FROM python:3.10.8-bullseye
 RUN useradd microblog
-
 # RUN apt-get update && apt-get install -y python3.10 python3-pip
-COPY requirements.txt ./
 RUN mkdir -p /usr/src/app/flmiguel
 WORKDIR /usr/src/app/flmiguel
 RUN python -m venv venv
+COPY requirements.txt ./
 RUN venv/bin/pip install --no-cache-dir -r ./requirements.txt
 RUN venv/bin/pip install gunicorn
 COPY app /usr/src/app/flmiguel/app
