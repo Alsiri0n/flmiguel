@@ -6,7 +6,7 @@ WORKDIR /usr/src/app/flmiguel
 RUN python -m venv venv
 COPY requirements.txt ./
 RUN venv/bin/pip install --no-cache-dir -r ./requirements.txt
-RUN venv/bin/pip install gunicorn
+# RUN venv/bin/pip install gunicorn
 COPY app /usr/src/app/flmiguel/app
 COPY *.py /usr/src/app/flmiguel/
 COPY boot.sh /usr/src/app/flmiguel/
