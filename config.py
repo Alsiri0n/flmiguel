@@ -27,4 +27,4 @@ class Config(object):
     LANGUAGES = ['en', 'ru']
     NLP_TRANSLATOR_KEY = os.environ.get('NLP_TRANSLATOR_KEY')
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
-    LOT_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
