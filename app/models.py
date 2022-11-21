@@ -6,6 +6,8 @@ from datetime import datetime
 from hashlib import md5
 import json
 import jwt
+import redis
+import rq
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import db, login, current_app
@@ -83,6 +85,7 @@ class User(UserMixin, db.Model):
                                         backref='recipient', lazy='dynamic')
     last_message_read_time = db.Column(db.DateTime)
     notifications = db.relationship('Notification', backref='user', lazy='dynamic')
+    tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
     def __repr__(self)->str:
         return f'<User: {self.username}>'
@@ -173,6 +176,27 @@ class User(UserMixin, db.Model):
         db.session.add(n)
         return n
 
+    def launch_task(self, name, description, *args, **kwargs):
+        """
+        Launch task for current user
+        """
+        rq_job = current_app.task.queue.enqueue('app.tasks.' + name, self.id, *args, **kwargs)
+        task = Task(id=rq_job.get_id(), name=name, description=description, user=self)
+        db.session.add(task)
+        return task
+    
+    def get_tasks_in_progress(self):
+        """
+        Get all tasks for user
+        """
+        return Task.query.filter_by(user=self, complete=False).first()
+    
+    def get_task_in_progress(self, name):
+        """
+        Return task at own name
+        """
+        return Task.query.filter_by(name=name, user=self, complete=False).first()
+
 
 @login.user_loader
 def load_user(cur_id: int):
@@ -226,3 +250,32 @@ class Notification(db.Model):
         Send data to client
         """
         return json.loads(str(self.payload_json))
+
+
+class Task(db.Model):
+    """
+    Create long polling task with help Redis
+    """
+    id = db.Column(db.String(36), primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    description = db.Column(db.String(128))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    complete = db.Column(db.Boolean, default=False)
+
+    def get_rq_job(self):
+        """
+        Get redis job
+        """
+        try:
+            rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
+        except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
+            return None
+        return rq_job
+
+    def get_progress(self):
+        """
+        Get progress for instance job
+        """
+        job = self.get_rq_job()
+        return job.meta.get('progress', 0) if job is not None else 100
+
