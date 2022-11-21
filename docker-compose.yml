@@ -66,6 +66,11 @@ services:
       - DB_URL=$DB_URL
       - REDIS_URL=$REDIS_URL
       - REDIS_PWD=$REDIS_PWD
+      - MAIL_USERNAME=$MAIL_USERNAME
+      - MAIL_PASSWORD=$MAIL_PASSWORD
+      - MAIL_SERVER=$MAIL_SERVER
+      - MAIL_USE_TLS=$MAIL_USE_TLS
+      - ADMIN_MAIL=$ADMIN_MAIL
     depends_on:
       - redis
     # command: rq worker --name worker --url redis://:8a12d677d0249e172249233b16275f2691425f41@192.168.1.47:6379/0
