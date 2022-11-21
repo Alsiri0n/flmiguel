@@ -15,11 +15,18 @@ def send_async_email(app, msg):
         mail.send(msg)
 
 
-def send_email(subject:str, sender:str, recepients:list, text_body:str, html_body:str)->None:
+def send_email(subject:str, sender:str, recepients:list, text_body:str, html_body:str,
+                attachments=None, sync:bool=False)->None:
     """
     Send email
     """
     msg = Message(subject=subject, sender=sender, recipients=recepients)
     msg.body = text_body
     msg.html = html_body
-    Thread(target=send_async_email, args=(current_app._get_current_object(), msg)).start()
+    if attachments:
+        for attachment in attachments:
+            msg.attach(*attachment)
+    if sync:
+        mail.send(msg)
+    else:
+        Thread(target=send_async_email, args=(current_app._get_current_object(), msg)).start()

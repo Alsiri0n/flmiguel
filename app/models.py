@@ -184,7 +184,7 @@ class User(UserMixin, db.Model):
         task = Task(id=rq_job.get_id(), name=name, description=description, user=self)
         db.session.add(task)
         return task
-    
+
     def get_tasks_in_progress(self):
         """
         Get all tasks for user
