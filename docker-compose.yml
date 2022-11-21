@@ -6,6 +6,7 @@ services:
   web:
     build: .
     container_name: flmiguel
+    image: master-image
     ports:
       - 1234:5050
     depends_on:
@@ -54,6 +55,12 @@ services:
     # command: redis-server --save 500 1 --loglevel debug --requirepass $REDIS_PWD
     volumes:
       - cache:/data
+
+  worker:
+    image: master-image
+    depends_on:
+      - redis
+    command: rq worker --name worker --url redis://:8a12d677d0249e172249233b16275f2691425f41@192.168.1.47:6379/0
 
 volumes:
   data01:
