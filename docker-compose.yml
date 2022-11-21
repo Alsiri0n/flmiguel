@@ -15,6 +15,7 @@ services:
       - flask_host=$FLASKHOST
       - FLASK_APP=$FLASK_APP
       - DB_URL=$DB_URL
+      - REDIS_URL=$REDIS_URL
     volumes:
       - .env:/usr/src/app/flmiguel/.env
       - ./logs:/usr/src/app/flmiguel/logs/
