@@ -49,8 +49,8 @@ services:
     image: redis:alpine
     ports:
       - 6379:6379
-    # command: redis-server --save 20 1 --loglevel warning --requirepass $REDIS_PWD
-    command: redis-server --save 500 1 --loglevel debug --requirepass $REDIS_PWD
+    command: redis-server --save 20 1 --loglevel warning --requirepass $REDIS_PWD
+    # command: redis-server --save 500 1 --loglevel debug --requirepass $REDIS_PWD
     volumes:
       - cache:/data
 
