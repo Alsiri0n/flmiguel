@@ -13,7 +13,7 @@ COPY boot.sh /usr/src/app/flmiguel/
 COPY .env /usr/src/app/flmiguel/
 RUN chmod +x /usr/src/app/flmiguel/boot.sh
 ENV FLASK_APP run.py
-RUN chown -R microblog:microblog /usr/src/app/flmiguel/
-USER microblog
+# RUN chown -R microblog:microblog /usr/src/app/flmiguel/
+# USER microblog
 # ENTRYPOINT ["./boot.sh"]
 EXPOSE 5050
