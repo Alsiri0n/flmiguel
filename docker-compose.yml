@@ -57,25 +57,24 @@ services:
     volumes:
       - cache:/data
 
-  worker:
-    image: master-image
-    environment:
-      - flask_port=$FLASKPORT
-      - flask_host=$FLASKHOST
-      - FLASK_APP=$FLASK_APP
-      - DB_URL=$DB_URL
-      - REDIS_URL=$REDIS_URL
-      - REDIS_PWD=$REDIS_PWD
-      - MAIL_USERNAME=$MAIL_USERNAME
-      - MAIL_PASSWORD=$MAIL_PASSWORD
-      - MAIL_SERVER=$MAIL_SERVER
-      - MAIL_PORT=$MAIL_PORT
-      - MAIL_USE_TLS=$MAIL_USE_TLS
-      - ADMIN_MAIL=$ADMIN_MAIL
-    depends_on:
-      - redis
-    # command: rq worker --name worker --url redis://:8a12d677d0249e172249233b16275f2691425f41@192.168.1.47:6379/0
-    command: venv/bin/rq worker -u redis://:8a12d677d0249e172249233b16275f2691425f41@192.168.1.47:6379/0 microblog-tasks
+  # worker:
+  #   image: master-image
+  #   environment:
+  #     - flask_port=$FLASKPORT
+  #     - flask_host=$FLASKHOST
+  #     - FLASK_APP=$FLASK_APP
+  #     - DB_URL=$DB_URL
+  #     - REDIS_URL=$REDIS_URL
+  #     - REDIS_PWD=$REDIS_PWD
+  #     - MAIL_USERNAME=$MAIL_USERNAME
+  #     - MAIL_PASSWORD=$MAIL_PASSWORD
+  #     - MAIL_SERVER=$MAIL_SERVER
+  #     - MAIL_PORT=$MAIL_PORT
+  #     - MAIL_USE_TLS=$MAIL_USE_TLS
+  #     - ADMIN_MAIL=$ADMIN_MAIL
+  #   depends_on:
+  #     - redis
+  #   command: venv/bin/rq worker -u $REDIS_URL microblog-tasks
 
 volumes:
   data01:

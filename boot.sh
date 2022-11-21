@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/
+venv/bin/rq worker -u $REDIS_URL microblog-tasks
 source venv/bin/activate
 # flask db upgrade
 flask translate compile
