@@ -54,6 +54,14 @@ services:
     volumes:
       - cache:/data
 
+  worker:
+      image: flmiguel_web:latest
+      depends_on:
+          - redis
+      command: rq worker --url $REDIS_URL
+      links:
+          - redis
+
 volumes:
   data01:
     driver: local
