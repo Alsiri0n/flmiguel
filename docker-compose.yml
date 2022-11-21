@@ -47,7 +47,11 @@ services:
     ports:
       - 6379:6379
     command: redis-server --save 20 1 --loglevel warning --requirepass $REDIS_PWD
+    volumes:
+      - cache:/data
 
 volumes:
   data01:
+    driver: local
+  cache:
     driver: local
