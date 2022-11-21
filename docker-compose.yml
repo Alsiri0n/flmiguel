@@ -6,7 +6,7 @@ services:
   web:
     build: .
     container_name: flmiguel
-    image: master-image
+    # image: master-image
     ports:
       - 1234:5050
     depends_on:
