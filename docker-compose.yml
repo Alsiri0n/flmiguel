@@ -55,21 +55,6 @@ services:
     volumes:
       - cache:/data
 
-  worker:
-    image: flmiguel_web:latest
-    environment:
-      - flask_port=$FLASKPORT
-      - flask_host=$FLASKHOST
-      - FLASK_APP=$FLASK_APP
-      - DB_URL=$DB_URL
-      - REDIS_URL=$REDIS_URL
-      - REDIS_PWD=$REDIS_PWD
-    depends_on:
-      - redis
-    command: rq worker --url $REDIS_URL
-    links:
-      - redis
-
 volumes:
   data01:
     driver: local
