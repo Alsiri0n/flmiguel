@@ -32,13 +32,13 @@ babel = Babel()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    babel.init_app(app)
     db.init_app(app)
-    bootstrap.init_app(app)
+    migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
-    migrate.init_app(app, db)
+    bootstrap.init_app(app)
     moment.init_app(app)
+    babel.init_app(app)
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
     app.redis = Redis.from_url(app.config['REDIS_URL'])
