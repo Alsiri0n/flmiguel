@@ -38,6 +38,7 @@ def export_posts(user_id):
             i += 1
             _set_task_progress(100 * i // total_posts)
         print(app.config['ADMINS'][0])
+        print(app.config)
         print(app)
         send_email('[Microblog] Your blog posts',
                     sender=app.config['ADMINS'][0], recipients=[user.email],
