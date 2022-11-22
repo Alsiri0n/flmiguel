@@ -30,7 +30,11 @@ def get_followers(id:int):
     """
     Return the followers of this user
     """
-    pass
+    user = User.query.get_or_404(id)
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = User.to_collection_dict(user.followers, page, per_page, 'api.get_followers', id=id)
+    return jsonify(data)
 
 
 @bp.route('/users/<int:id>/followed', methods=['GET'])
@@ -38,7 +42,11 @@ def  get_followed(id:int):
     """
     Return the users this user is following
     """
-    pass
+    user = User.query.get_or_404(id)
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = User.to_collection_dict(user.followed, page, per_page, 'api.get_followed', id=id)
+    return jsonify(data)
 
 @bp.route('/users', methods=['POST'])
 def create_user():

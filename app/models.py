@@ -61,7 +61,7 @@ class PaginatedAPIMixin(object):
     @staticmethod
     def to_collection_dict(query, page:int, per_page:int, endpoint:str, **kwargs)->dict:
         """
-        Convert query to dict
+        Generic method for convert query to dict
         """
         resources = query.paginate(page=page, per_page=per_page, error_out=False)
         data = {
