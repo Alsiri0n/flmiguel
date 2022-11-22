@@ -2,13 +2,15 @@
 Represent contoller class for working with User through REST API
 """
 from app.api import bp
-from flask import jsonify, request, url_for
+from app.api.errors import bad_request
+from app.api.auth import token_auth
+from flask import jsonify, request, url_for, abort
 from app import db
 from app.models import User
-from app.api.errors import bad_request
 
 
 @bp.route('/users/<int:id>', methods=["GET"])
+@token_auth.login_required
 def get_user(id:int):
     """
     Return a user
@@ -17,6 +19,7 @@ def get_user(id:int):
 
 
 @bp.route('/users', methods=['GET'])
+@token_auth.login_required
 def get_users():
     """
     Return the collection of all users
@@ -28,6 +31,7 @@ def get_users():
 
 
 @bp.route('/users/<int:id>/followers', methods=['GET'])
+@token_auth.login_required
 def get_followers(id:int):
     """
     Return the followers of this user
@@ -40,6 +44,7 @@ def get_followers(id:int):
 
 
 @bp.route('/users/<int:id>/followed', methods=['GET'])
+@token_auth.login_required
 def  get_followed(id:int):
     """
     Return the users this user is following
@@ -73,10 +78,13 @@ def create_user():
 
 
 @bp.route('/users/<int:id>', methods=['PUT'])
+@token_auth.login_required
 def update_user(id:int):
     """
     Modify a user
     """
+    if token_auth.current_user().id != id:
+        abort(403)
     user = User.query.get_or_404(id)
     data = request.get_json() or {}
     if 'username' in data and data['username'] != user.username and \

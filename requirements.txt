@@ -1,8 +1,9 @@
-elasticsearch==8.5.0
+elasticsearch==8.5.1
 charset-normalizer==2.1.1
 Flask==2.2.2
 Flask-Babel==2.0.0
 Flask-Bootstrap==3.3.7.1
+Flask-httpauth==4.7.0
 Flask-Login==0.6.2
 Flask-Mail==0.9.1
 Flask-Moment==1.0.5
