@@ -9,6 +9,7 @@ import jwt
 import redis
 import rq
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import url_for
 from flask_login import UserMixin
 from app import db, login, current_app
 from app.search import add_to_index, query_index, remove_from_index
@@ -53,6 +54,32 @@ class SearchableMixin(object):
             add_to_index(cls.__tablename__, obj)
 
 
+class PaginatedAPIMixin(object):
+    """
+    For convient work with collection of items
+    """
+    @staticmethod
+    def to_collection(query, page:int, per_page:int, endpoint, **kwargs)->dict:
+        resources = query.paginate(page=page, per_page=per_page, error_out=False)
+        data = {
+            'items': [item.to_dict() for item in resources.items],
+            '_meta': {
+                'page': page,
+                'per_page': per_page,
+                'total_pages': resources.pages,
+                'total_items': resources.total
+            },
+            '_links': {
+                'self': url_for(endpoint, page=page, per_page=per_page, **kwargs),
+                'next': url_for(endpoint, page=page + 1, per_page=per_page, **kwargs ) \
+                                if resources.has_next else None
+                'prev': url_for(endpoint, page=page - 1, per_page=per_page, **kwargs) \
+                                if resources.has_prev else None
+            }
+        }
+        return data
+
+
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
 
@@ -61,7 +88,7 @@ followers = db.Table('followers',
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
 
 
-class User(UserMixin, db.Model):
+class User(PaginatedAPIMixin, UserMixin, db.Model):
     """
     Represent User model into DB
     """
@@ -176,6 +203,7 @@ class User(UserMixin, db.Model):
         db.session.add(n)
         return n
 
+
     def launch_task(self, name, description, *args, **kwargs):
         """
         Launch task for current user
@@ -185,17 +213,54 @@ class User(UserMixin, db.Model):
         db.session.add(task)
         return task
 
+
     def get_tasks_in_progress(self):
         """
         Get all tasks for user
         """
         return Task.query.filter_by(user=self, complete=False).all()
-    
+
+
     def get_task_in_progress(self, name):
         """
         Return task at own name
         """
         return Task.query.filter_by(name=name, user=self, complete=False).first()
+
+
+    def to_dict(self, include_email:bool=False)->dict:
+        """
+        Return dict that represents user for JSON serialization
+        """
+        data = {
+            'id': self.id,
+            'username': self.username,
+            'last_seen': self.last_seen.isoformat() + 'Z',
+            'about_me': self.about_me,
+            'post_count': self.posts.count(),
+            'follower_count': self.followers.count(),
+            'followed_count': self.followed.count(),
+            '_links': {
+                'self': url_for('api.get_user', id=self.id),
+                'followers': url_for('api.get_followers', id=self.id),
+                'followed': url_for('api.get_followed', id=self.id),
+                'avatar': self.avatar(128)
+            }
+        }
+        if include_email:
+            data['email'] = self.email
+        return data
+
+
+    def from_dict(self, data:dict, new_user:bool=False):
+        """
+        Conversion data to User model
+        """
+        for field in ['username', 'email', 'about_me']:
+            if field in data:
+                setattr(self, field, data[field])
+            if new_user and 'password' in data:
+                self.set_password(data['password'])
 
 
 @login.user_loader
