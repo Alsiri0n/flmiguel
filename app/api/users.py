@@ -11,7 +11,7 @@ def get_user(id:int):
     """
     Return a user
     """
-    pass
+    return jsonify(User.query.get_or_404(id).to_dict())
 
 
 @bp.route('/users', methods=['GET'])
