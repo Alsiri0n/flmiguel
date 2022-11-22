@@ -2,7 +2,7 @@
 Represent contoller class for working with User through REST API
 """
 from app.api import bp
-from flask import jsonify
+from flask import jsonify, request
 from app.models import User
 
 
@@ -19,7 +19,10 @@ def get_users():
     """
     Return the collection of all users
     """
-    pass
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = User.to_collection_dict(User.query, page, per_page, 'api.get_users')
+    return jsonify(data)
 
 
 @bp.route('/users/<int:id>/followers', methods=['GET'])

@@ -59,7 +59,10 @@ class PaginatedAPIMixin(object):
     For convient work with collection of items
     """
     @staticmethod
-    def to_collection(query, page:int, per_page:int, endpoint, **kwargs)->dict:
+    def to_collection_dict(query, page:int, per_page:int, endpoint:str, **kwargs)->dict:
+        """
+        Convert query to dict
+        """
         resources = query.paginate(page=page, per_page=per_page, error_out=False)
         data = {
             'items': [item.to_dict() for item in resources.items],
